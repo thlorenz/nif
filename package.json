@@ -1,22 +1,29 @@
 {
-    "name" : "nif",
-    "version" : "0.0.0",
-    "description" : "node --inspect a file and open devtool url in chrome via chrome-cli.",
-    "bin" : "nif",
-    "repository" : {
-      "type" : "git",
-      "url" : "git://github.com/thlorenz/nif.git"
-    },
-    "homepage" : "https://github.com/thlorenz/nif",
-    "keywords": [ "debug", "inspect", "devtools" , "chrome" ] ,
-    "author" : {
-      "name" : "Thorsten Lorenz",
-      "email" : "thlorenz@gmx.de",
-      "url" : "http://thlorenz.com"
-    },
-    "license" : {
-      "type": "MIT",
-      "url": "https://github.com/thlorenz/nif/blob/master/LICENSE"
-    },
-    "engine" : { "node" : ">=6.0" }
+  "name": "nif",
+  "version": "1.0.0",
+  "description": "node --inspect a file and open devtool url in chrome via chrome-cli.",
+  "bin": "nif",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/nif.git"
+  },
+  "homepage": "https://github.com/thlorenz/nif",
+  "keywords": [
+    "debug",
+    "inspect",
+    "devtools",
+    "chrome"
+  ],
+  "author": {
+    "name": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "http://thlorenz.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/thlorenz/nif/blob/master/LICENSE"
+  },
+  "engine": {
+    "node": ">=6.0"
+  }
 }
