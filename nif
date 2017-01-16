@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const { spawn } = require('child_process')
+
+const args = [ '--inspect', '--debug-brk' ].concat(process.argv.slice(2))
+const { stderr } = spawn(process.execPath, args)
+stderr.on('data', onstderrData)
+
+let opened = false
+function onstderrData(d) {
+  if (opened) return
+  // Technically we'd have to ensure we have the complete line here,
+  // but the first chunk is small enough that this works in most cases.
+  // If you run into a problem please submit a PR (without any extra deps)
+  // please. Thanks :)
+  const lines = d.toString().split('\n')
+  const url = lines.filter(x => x.trim().length).pop()
+  if (!/chrome-devtools[:]\/\//.test(url)) return
+  opened = true
+  spawn('chrome-cli', [ 'open', url ], { stdio: 'inherit' })
+}
