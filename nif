@@ -1,6 +1,12 @@
 #!/usr/bin/env node
+const { spawn, execSync } = require('child_process')
 
-const { spawn } = require('child_process')
+try {
+  execSync('which chrome-cli', { env: process.env, stdio: 'ignore' })
+} catch (err) {
+  console.error('No chrome-cli executable found. Please install it using \nbrew install chrome-cli')
+  process.exit(1)
+}
 
 const args = [ '--inspect', '--debug-brk' ].concat(process.argv.slice(2))
 const { stderr } = spawn(process.execPath, args)
