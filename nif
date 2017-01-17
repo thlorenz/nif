@@ -15,7 +15,7 @@ function onstderrData(d) {
   // please. Thanks :)
   const lines = d.toString().split('\n')
   const url = lines.filter(x => x.trim().length).pop()
-  if (!/chrome-devtools[:]\/\//.test(url)) return
+  if (!/chrome-devtools[:]\/\//.test(url)) return process.stderr.write(d)
   opened = true
   spawn('chrome-cli', [ 'open', url ], { stdio: 'inherit' })
 }
