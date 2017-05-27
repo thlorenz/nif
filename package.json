@@ -1,6 +1,6 @@
 {
   "name": "nif",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "node --inspect a file and open devtool url in chrome via chrome-cli.",
   "bin": "nif",
   "repository": {
