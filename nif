@@ -14,16 +14,28 @@ if (argv[0] == '-n') {
   argv.shift()
 }
 
-const args = [ '--inspect-brk' ].concat(argv)
-const { stderr } = spawn(process.execPath, args)
-
 let opened = false
-stderr.on('data', function(data) {
+let port = 9229
+inspect()
+
+function inspect() {
+  const args = [ '--inspect-brk=' + port ].concat(argv)
+  const { stderr } = spawn(process.execPath, args)
+  stderr.on('data', parseStderr)
+}
+
+function parseStderr(data) {
   if (opened) return
+  data = data.toString()
+
+  // Another inspector may be running on our port.
+  if (/already in use/.test(data)) {
+    return inspect(port += 1)
+  }
 
   // Assume the entire url exists in one chunk.
   // Please file an issue if this causes problems :)
-  let url = /\b(ws|chrome-devtools)[:]\/\/([^\s]+)\b/.exec(data.toString())
+  let url = /\b(ws|chrome-devtools)[:]\/\/([^\s]+)\b/.exec(data)
   if (!url) return
   if (url[1] == 'ws') {
     url = 'chrome-devtools://devtools/bundled/inspector.html?ws=' + url[2]
@@ -35,4 +47,4 @@ stderr.on('data', function(data) {
   if (argv.n) args.push('-n')
   spawn('chrome-cli', args, { stdio: 'inherit' })
   opened = true
-})
+}
