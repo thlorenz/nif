@@ -14,7 +14,7 @@ if (argv[0] == '-n') {
   argv.shift()
 }
 
-const args = [ '--inspect', '--debug-brk' ].concat(argv)
+const args = [ '--inspect-brk' ].concat(argv)
 const { stderr } = spawn(process.execPath, args)
 
 let opened = false
