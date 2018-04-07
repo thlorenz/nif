@@ -10,18 +10,25 @@ try {
 
 const args = [ '--inspect', '--debug-brk' ].concat(process.argv.slice(2))
 const { stderr } = spawn(process.execPath, args)
-stderr.on('data', onstderrData)
 
 let opened = false
-function onstderrData(d) {
+stderr.on('data', function(data) {
   if (opened) return
-  // Technically we'd have to ensure we have the complete line here,
-  // but the first chunk is small enough that this works in most cases.
-  // If you run into a problem please submit a PR (without any extra deps)
-  // please. Thanks :)
-  const lines = d.toString().split('\n')
-  const url = lines.filter(x => x.trim().length).pop()
-  if (!/chrome-devtools[:]\/\//.test(url)) return process.stderr.write(d)
+
+  // Assume the entire url exists in one chunk.
+  // Please file an issue if this causes problems :)
+  let url = /\b(ws|chrome-devtools)[:]\/\/([^\s]+)\b/.exec(data.toString())
+  if (!url) return
+  if (url[1] == 'ws') {
+    url = 'chrome-devtools://devtools/bundled/inspector.html?ws=' + url[2]
+  } else {
+    url = url[0] // node < 8
+  }
+
   opened = true
-  spawn('chrome-cli', [ 'open', url ], { stdio: 'inherit' })
-}
+  spawn('chrome-cli', [
+    'open', url,
+  ], {
+    stdio: 'inherit',
+  })
+})
